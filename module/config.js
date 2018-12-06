@@ -2,7 +2,7 @@
 
 const app = {
   dbUrl: '127.0.0.1:27017',
-  dbName: 'minikoadb',
+  dbName: 'koacms',
   username: 'admin',
   password: '123456'
 }

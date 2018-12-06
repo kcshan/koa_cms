@@ -4,7 +4,7 @@ const Koa = require('koa'),
       router = require('koa-router')(),
       render = require('koa-art-template'),
       BodyParser = require('koa-bodyparser'),
-      DB = require('./module/db')
+      session = require('koa-session')
 
 // 引入子模块
 const admin = require('./routes/admin.js'),
@@ -16,17 +16,45 @@ const app = new Koa()
 
 app.use(BodyParser())
 
-//设置静态资源的路径 
-const staticPath = './static'
- 
+// 设置静态资源的路径 
+const staticPath = './public'
 app.use(static(
   path.join( __dirname,  staticPath)
 ))
+
+// 配置session中间件
+app.keys = ['some secret hurr']
+const CONFIG = {
+  key: 'koa:sess',
+  maxAge: 864000, //【需要修改】
+  overwrite: true,
+  httpOnly: true,
+  signed: true,
+  rolling: true, //【需要修改】每次请求修改session
+  renew: false //【需要修改】 session快过期重新修改
+}
+app.use(session(CONFIG, app))
 
 render(app, {
   root: path.join(__dirname, './views'),
   extname: '.html',
   debug: process.env.NODE_ENV == 'production'
+})
+
+// 配置中间件 获取域名地址
+router.use(async (ctx, next) => {
+  ctx.state.__HOST__ = 'http://' + ctx.request.header.host
+
+  // 权限配置
+  if (ctx.session.userinfo) {
+    await next()
+  } else {
+    if (ctx.url == '/admin/login' || ctx.url == '/admin/login/doLogin') {
+      await next()
+    } else {
+      ctx.redirect('/admin/login')
+    }
+  }
 })
 
 router.use('/', index)
