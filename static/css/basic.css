@@ -1,0 +1,14 @@
+.title{
+  color: red;
+}
+.style_label{
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+}
+.add_btn{
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  background-color: #ccc;
+}
