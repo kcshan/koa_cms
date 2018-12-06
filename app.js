@@ -4,6 +4,7 @@ const Koa = require('koa'),
       static = require('koa-static'),
       router = require('koa-router')(),
       render = require('koa-art-template'),
+      jsonp = require('koa-jsonp'),
       BodyParser = require('koa-bodyparser'),
       session = require('koa-session'),
       sd = require('silly-datetime')
@@ -17,6 +18,7 @@ const admin = require('./routes/admin.js'),
 const app = new Koa()
 
 app.use(BodyParser())
+app.use(jsonp())
 
 // 设置静态资源的路径 
 const staticPath = './public'

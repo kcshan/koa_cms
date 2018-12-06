@@ -3,11 +3,12 @@ const router = require('koa-router')()
 const manage = require('./admin/manage'),
       focus = require('./admin/focus'),
       newscate = require('./admin/newscate'),
-      login = require('./admin/login')
+      login = require('./admin/login'),
+      index = require('./admin/index')
 
-router.get('/', async (ctx) => {
-  await ctx.render('admin/index')
-})
+// router.use('/', index)
+// 后台的首页可以这样写
+router.use(index)
 
 router.use('/manage', manage)
 
