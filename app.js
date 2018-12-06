@@ -1,5 +1,6 @@
 const Koa = require('koa'),
       path = require('path'),
+      url = require('url'),
       static = require('koa-static'),
       router = require('koa-router')(),
       render = require('koa-art-template'),
@@ -49,7 +50,8 @@ router.use(async (ctx, next) => {
   if (ctx.session.userinfo) {
     await next()
   } else {
-    if (ctx.url == '/admin/login' || ctx.url == '/admin/login/doLogin') {
+    let pathname = url.parse(ctx.request.url).pathname
+    if (pathname == '/admin/login' || pathname == '/admin/login/doLogin' || pathname == "/admin/login/code") {
       await next()
     } else {
       ctx.redirect('/admin/login')

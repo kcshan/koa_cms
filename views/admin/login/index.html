@@ -31,6 +31,9 @@
 				margin-top:0px;
 				padding-bottom: 12px;
 			}
+			#code{
+				cursor: pointer;
+			}
 		</style>
 	
 	</head>
@@ -54,26 +57,26 @@
 
 											<div class="space-6"></div>
 
-											<form action="{{__HOST__}}/admin/login/doLogin" method="post">
+											<form id="loginForm" action="{{__HOST__}}/admin/login/doLogin" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" name="username" placeholder="用户名" />
+															<input id="s_username" type="text" class="form-control" name="username" placeholder="用户名" />
 															<i class="icon-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" name="password" placeholder="密码" />
+															<input id="s_password" type="password" class="form-control" name="password" placeholder="密码" />
 															<i class="icon-lock"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="验证吗" style="width:200px;float:left;" />
-															<img style="float:right;" src="https://www.itying.com/koa/admin_express.php?m=Public&a=verify&rand=1521453067" alt="">
+															<input id="s_code" type="password" name="code" class="form-control" placeholder="验证吗" style="width:200px;float:left;" />
+															<img id="code" style="float:right;" src="{{__HOST}}/admin/login/code" alt="">
 														</span>
 													</label>
 
@@ -111,7 +114,20 @@
 		</div><!-- /.main-container -->
 
 		<!-- basic scripts -->
-
-	
+		<script src='{{__HOST__}}/admin/js/jquery-2.0.3.min.js'></script>
+		<script>
+			$(function () {
+				$('#code').click(function () {
+					$(this).attr('src', '{{__HOST}}/admin/login/code?t=' + Math.random() * 1000) 
+				})
+				$('#loginForm').submit(function () {
+					if ($('#s_username').val() == '' || $('#s_password').val() == '' || $('#s_code').val() == '') {
+						alert('用户名或者密码或者验证码不能为空')
+						return false
+					}
+					return true
+				})
+			})
+		</script>
 </body>
 </html>
