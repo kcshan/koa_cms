@@ -5,7 +5,8 @@ const Koa = require('koa'),
       router = require('koa-router')(),
       render = require('koa-art-template'),
       BodyParser = require('koa-bodyparser'),
-      session = require('koa-session')
+      session = require('koa-session'),
+      sd = require('silly-datetime')
 
 // 引入子模块
 const admin = require('./routes/admin.js'),
@@ -39,19 +40,30 @@ app.use(session(CONFIG, app))
 render(app, {
   root: path.join(__dirname, './views'),
   extname: '.html',
-  debug: process.env.NODE_ENV == 'production'
+  debug: process.env.NODE_ENV == 'production',
+  dateFormat: dateFormat = function (value) {
+    return sd.format(new Date(value), 'YYYY-MM-DD HH:mm:ss')
+  }
 })
 
 // 配置中间件 获取域名地址
 router.use(async (ctx, next) => {
   ctx.state.__HOST__ = 'http://' + ctx.request.header.host
+  let pathname = url.parse(ctx.request.url).pathname.substring(1)
+
+  let splitUrl = pathname.split('/')
+  // 配置全局信息
+  ctx.state.G = {
+    url: splitUrl,
+    userinfo: ctx.session.userinfo
+  }
 
   // 权限配置
   if (ctx.session.userinfo) {
     await next()
   } else {
-    let pathname = url.parse(ctx.request.url).pathname
-    if (pathname == '/admin/login' || pathname == '/admin/login/doLogin' || pathname == "/admin/login/code") {
+    
+    if (pathname == 'admin/login' || pathname == 'admin/login/doLogin' || pathname == "admin/login/code") {
       await next()
     } else {
       ctx.redirect('/admin/login')

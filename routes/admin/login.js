@@ -21,14 +21,20 @@ router.post('/doLogin', async (ctx) => {
   // 3、成功之后把用户信息写入session
 
   if (code == ctx.session.code) {
-    console.log({"username": username, "password": tools.md5(password)})
-    const result = await DB.find('users', {
+    const result = await DB.find('admin', {
       "username": username,
       "password": tools.md5(password)
     })
-
-    if (result.lenght > 0) {
+    console.log(tools.md5(password))
+    if (result.length > 0) {
       ctx.session.userinfo = result[0]
+
+      // 更新用户表 改变用户登录的时间
+      await DB.update('admin', {
+        "_id": DB.getObjectID(result[0]._id)
+      }, {
+        last_time: new Date()
+      })
       ctx.redirect(ctx.state.__HOST__ + '/admin')
     } else {
       await ctx.render('admin/error', {
@@ -71,6 +77,13 @@ router.get('/code', async (ctx) => {
 
   ctx.response.type = "image/svg+xml"
 	ctx.body = captcha.data
+})
+
+router.get('/loginOut', async (ctx) => {
+  
+  ctx.session.userinfo = null;
+
+	ctx.redirect(ctx.state.__HOST__ + '/admin/login')
 })
 
 module.exports = router.routes()
