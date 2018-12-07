@@ -108,7 +108,21 @@ router.post('/doEdit', async (ctx) => {
 })
 
 router.get('/delete', async (ctx) => {
-  ctx.body = '删除用户'
+  let id = ctx.query.id
+  try {
+      const removeResult = await DB.remove('admin', {
+        "_id": DB.getObjectID(id)
+      })
+      if (removeResult) {
+        ctx.redirect(ctx.state.__HOST__ + '/admin/manage')
+      }
+
+  } catch (error) {
+    await ctx.render('admin/error', {
+      msg: '修改失败:' + error,
+      redirect: ctx.state.__HOST__ + '/admin/manage/edit?id=' + id
+    })
+  }
 })
 
 module.exports = router.routes()

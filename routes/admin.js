@@ -2,7 +2,7 @@ const router = require('koa-router')()
 
 const manage = require('./admin/manage'),
       focus = require('./admin/focus'),
-      newscate = require('./admin/newscate'),
+      articlecate = require('./admin/articlecate'),
       login = require('./admin/login'),
       index = require('./admin/index')
 
@@ -14,7 +14,7 @@ router.use('/manage', manage)
 
 router.use('/focus', focus)
 
-router.use('/newscate', newscate)
+router.use('/articlecate', articlecate)
 
 router.use('/login', login)
 
