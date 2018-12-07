@@ -20,7 +20,7 @@ router.get('/changeStatus', async (ctx) => {
     if (findResult[0][attr] == 1) {
       json[attr] = 0
     } else {
-      json[arr] = 1
+      json[attr] = 1
     }
     const updateResult = await DB.update(collectionName, {
       '_id': DB.getObjectID(id)
