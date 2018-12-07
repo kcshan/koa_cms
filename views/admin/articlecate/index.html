@@ -85,9 +85,9 @@
 
 										<td class="center">
 											{{if $value.status==1}}
-												<img src="{{__HOST__}}/admin/images/yes.gif" onclick="app.toggle(this,'admin','status','{{@$value._id}}')" />
+												<img src="{{__HOST__}}/admin/images/yes.gif" onclick="app.toggle(this,'articlecate','status','{{@$value._id}}')" />
 											{{else}}
-												<img src="{{__HOST__}}/admin/images/no.gif" onclick="app.toggle(this,'admin','status','{{@$value._id}}')" />
+												<img src="{{__HOST__}}/admin/images/no.gif" onclick="app.toggle(this,'articlecate','status','{{@$value._id}}')" />
 											{{/if}}
 										</td>
 
@@ -102,10 +102,11 @@
 													</button>
 												</a>
 
-												<a href="{{__HOST__}}/admin/articlecate/delete?id={{@$value._id}}">
+												<a class="delete" href="{{__HOST__}}/admin/remove?collection=articlecate&id={{@$value._id}}">
 
 
-													<button class="btn btn-xs btn-danger">
+
+												<button class="btn btn-xs btn-danger">
 														<i class="icon-trash bigger-120"></i>
 													</button>
 
@@ -128,9 +129,9 @@
 
 												<td class="center" >
 													{{if $value.status==1}}
-													<img src="{{__HOST__}}/admin/images/yes.gif" onclick="app.toggle(this,'admin','status','{{@$value._id}}')" />
+													<img src="{{__HOST__}}/admin/images/yes.gif" onclick="app.toggle(this,'articlecate','status','{{@$value._id}}')" />
 													{{else}}
-													<img src="{{__HOST__}}/admin/images/no.gif" onclick="app.toggle(this,'admin','status','{{@$value._id}}')" />
+													<img src="{{__HOST__}}/admin/images/no.gif" onclick="app.toggle(this,'articlecate','status','{{@$value._id}}')" />
 													{{/if}}
 												</td>
 
@@ -145,7 +146,7 @@
 															</button>
 														</a>
 
-														<a href="{{__HOST__}}/admin/articlecate/delete?id={{@$value._id}}">
+														<a class="delete"  href="{{__HOST__}}/admin/remove?collection=articlecate&id={{@$value._id}}">
 
 
 															<button class="btn btn-xs btn-danger">

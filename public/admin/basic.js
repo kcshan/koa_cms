@@ -1,4 +1,8 @@
-const app = {
+$(function () {
+  app.confirmDelete()
+})
+
+var app = {
   toggle: function (el, collectionName, attr, id) {
     $.get('/admin/changeStatus', {
       collectionName,
@@ -12,6 +16,12 @@ const app = {
           el.src = '/admin/images/yes.gif';
         }
       }
+    })
+  },
+  confirmDelete: function () {
+    $('.delete').click(function () {
+      var flag = confirm('您确定要删除吗？')
+      return flag
     })
   }
 }

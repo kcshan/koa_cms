@@ -59,12 +59,12 @@
 
 							<!--表格-->
 
-							<form action="{{__HOST_}}/admin/articlecate/doAdd" method="post" class="form-horizontal" role="form">
+							<form action="{{__HOST_}}/admin/articlecate/doAdd" method="post" class="form-horizontal" role="form" id="c_addForm">
 								<div class="form-group">
 									<label class="col-sm-2 control-label no-padding-right" for="title">分类名称:</label>
 
 									<div class="col-sm-10">
-										<input type="text" id="title"  name="title" class="col-xs-10 col-sm-5" />
+										<input type="text" id="c_a_title"  name="title" class="col-xs-10 col-sm-5" />
 									</div>
 								</div>
 
@@ -93,7 +93,7 @@
 									<label class="col-sm-2 control-label no-padding-right" for="keywords">关键字：</label>
 
 									<div class="col-sm-10">
-										<input type="text" id="keywords"  name="keywords" class="col-xs-10 col-sm-5" />
+										<input type="text" id="c_a_keywords"  name="keywords" class="col-xs-10 col-sm-5" />
 									</div>
 								</div>
 
@@ -111,7 +111,7 @@
 								<div class="form-group" style="height:100px;">
 									<label class="col-sm-2 control-label no-padding-right" for="description">描述：</label>
 									<div class="col-sm-10">
-										<textarea  style="height:100px;" class="col-xs-10 col-sm-5"  name="description" id="description" cols="10" rows="10"></textarea>
+										<textarea  style="height:100px;" class="col-xs-10 col-sm-5"  name="description" id="c_a_description" cols="10" rows="10"></textarea>
 									</div>
 								</div>
 
@@ -167,6 +167,14 @@
 					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
 					return 'left';
 				}
+
+				$('#c_addForm').submit(function () {
+					if ($('#c_a_title').val() == '' || $('#c_a_description').val() == '' || $('#c_a_keywords').val() == '') {
+						alert('分类名称或者关键字或者描述不能为空')
+						return false
+					}
+					return true
+				})
 			})
 		</script>
 	

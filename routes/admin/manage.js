@@ -17,7 +17,6 @@ router.get('/add', async (ctx) => {
 })
 
 router.post('/doAdd', async (ctx) => {
-  console.log(ctx.request.body)
 
   // 1、获取表单提交的数据
 
@@ -94,28 +93,6 @@ router.post('/doEdit', async (ctx) => {
         ctx.redirect(ctx.state.__HOST__ + '/admin/manage')
       }
     }
-
-  } catch (error) {
-    await ctx.render('admin/error', {
-      msg: '修改失败:' + error,
-      redirect: ctx.state.__HOST__ + '/admin/manage/edit?id=' + id
-    })
-  }
-  
-
-
-  // await ctx.render('admin/manage/edit')
-})
-
-router.get('/delete', async (ctx) => {
-  let id = ctx.query.id
-  try {
-      const removeResult = await DB.remove('admin', {
-        "_id": DB.getObjectID(id)
-      })
-      if (removeResult) {
-        ctx.redirect(ctx.state.__HOST__ + '/admin/manage')
-      }
 
   } catch (error) {
     await ctx.render('admin/error', {
