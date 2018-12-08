@@ -163,13 +163,11 @@
 
 
 	<script>
-		console.log({{page}})
 		$('#page').jqPaginator({
 			totalPages: {{totalPages}},
 			visiblePages: 8,
 			currentPage: {{page}},
 			onPageChange: function (num, type) {
-				console.log(num, type);
 //
 				if(type=='change'){
 					location.href="{{__HOST__}}/admin/article?page="+num;
