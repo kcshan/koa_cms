@@ -91,7 +91,11 @@
 										</td>
 
 										<td>
-											{{$value.add_time | dateFormat}}
+
+											{{if $value.add_time}}
+													{{$value.add_time | dateFormat}}
+											{{/if}}
+
 										</td>
 										<td>
 											<input type="text" value="{{$value.sort || 0}}" class="sort_input" onblur="app.changeSort(this,'article','{{@$value._id}}')"/>
@@ -168,6 +172,7 @@
 			visiblePages: 8,
 			currentPage: {{page}},
 			onPageChange: function (num, type) {
+				console.log(num, type);
 //
 				if(type=='change'){
 					location.href="{{__HOST__}}/admin/article?page="+num;

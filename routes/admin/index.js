@@ -80,14 +80,14 @@ router.get('/remove', async (ctx) => {
     let pageUrlArr = prevPage.split('article?page=')
     let pageNum = parseInt(pageUrlArr[1])
     let pageHost = pageUrlArr[0]
-    if (count % 3 == 1 && pageNum > 1) {
+    if (count % 10 == 1 && pageNum > 1) {
       newPrevPage = pageHost + 'article?page=' + (pageNum - 1)
     } else {
       newPrevPage = prevPage
     }
   }
   // ---
-  
+
   try {
       const removeResult = await DB.remove(collectionName, {
         "_id": DB.getObjectID(id)

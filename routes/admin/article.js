@@ -20,12 +20,15 @@ const upload = multer({storage: storage})
 
 router.get('/', async (ctx) => {
   const page = ctx.query.page || 1
-  const pageSize = 3
+  const pageSize = 10
 
   var count= await  DB.count('article',{});
   var result=await DB.find('article',{},{},{
       page:page,
-      pageSize:pageSize
+      pageSize:pageSize,
+      sortJson:{
+        'add_time':-1
+      }
   });
   await ctx.render('admin/article/index',{
     list: result,
