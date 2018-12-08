@@ -43,71 +43,101 @@ router.get('/add', async (ctx) => {
   })
 })
 
-router.post('/doAdd', upload.single('pic') , async (ctx) => {
-    ctx.body = {
-      filename: ctx.req.file ? ctx.req.file.filename : '', // 返回的文件名
-      body: ctx.req.body
+router.post('/doAdd', upload.single('img_url') , async (ctx) => {
+    // ctx.body = {
+    //   filename: ctx.req.file ? ctx.req.file.filename : '', // 返回的文件名
+    //   body: ctx.req.body
+    // }
+    let pid=ctx.req.body.pid;
+    let catename=ctx.req.body.catename.trim();
+    let title=ctx.req.body.title.trim();
+    let author=ctx.req.body.author.trim();
+    let pic=ctx.req.body.author;
+    let status=ctx.req.body.status;
+    let is_best=ctx.req.body.is_best;
+    let is_hot=ctx.req.body.is_hot;
+    let is_new=ctx.req.body.is_new;
+    let keywords=ctx.req.body.keywords;
+    let description=ctx.req.body.description || '';
+    let content=ctx.req.body.content ||'';
+    let img_url=ctx.req.file? ctx.req.file.path :'';
+
+    //属性的简写
+    let json={
+        pid,catename,title,author,status,is_best,is_hot,is_new,keywords,description,content,img_url
     }
-  // try {
-  //   const addJson = ctx.request.body
-  //   const result = await DB.insert('article', addJson)
-  //   if (result.result.ok) {
-  //     ctx.redirect(ctx.state.__HOST__ + '/admin/article')
-  //   } else {
-  //     await ctx.render('admin/error', {
-  //       msg: '新增分类失败',
-  //       redirect: ctx.state.__HOST__ + '/admin/article/add'
-  //     })
-  //   }
-
-  // } catch (error) {
-  //   await ctx.render('admin/error', {
-  //     msg: '新增分类失败，参数错误' + error,
-  //     redirect: ctx.state.__HOST__ + '/admin/article/add'
-  //   })
-  // }
+    try {
+      var result=DB.insert('article',json);
+      //跳转
+      if (result) {
+        ctx.redirect(ctx.state.__HOST__+'/admin/article');
+      }
+    } catch (error) {
+      await ctx.render('admin/error', {
+        msg: '新增内容失败：' + error,
+        redirect: ctx.state.__HOST__ + '/admin/article/add'
+      })
+    }
+    
 })
 
-router.get('/ueditor', async (ctx) => {
-  await ctx.render('admin/article/ueditor')
-})
+// router.get('/ueditor', async (ctx) => {
+//   await ctx.render('admin/article/ueditor')
+// })
 
 router.get('/edit', async (ctx) => {
-  let id = ctx.query.id
-  const result = await DB.find('article', {
-    "_id": DB.getObjectID(id)
-  })
-  const castResult = await DB.find('article', {'pid': '0'})
-  await ctx.render('admin/article/edit', {
-    catelist: castResult,
-    list: result[0]
-  })
+  //查询分类数据
+  let id=ctx.query.id;
+  //分类
+  let catelist=await DB.find('articlecate',{});
+  //当前要编辑的数据
+  let articlelist=await DB.find('article',{"_id":DB.getObjectID(id)});
+  await  ctx.render('admin/article/edit',{
+      catelist:tools.cateToList(catelist),
+      list:articlelist[0],
+      prevPage :ctx.state.G.prevPage   /*保存上一页的值*/
+  });
 })
 
 router.post('/doEdit', async (ctx) => {
-  let editData = ctx.request.body
-  let title = editData.title
-  let id = editData.id
-  let pid = editData.pid
-  let description = editData.description
-  let keywords = editData.keywords
-  let status = editData.status
-  try {
-    const result = DB.update('article', {
-      '_id': DB.getObjectID(id)
-    }, {
-      title,
-      pid,
-      description,
-      keywords,
-      status
-    })
-    ctx.redirect(ctx.state.__HOST__ + '/admin/article')
-  } catch (error) {
-    await ctx.render('admin/error', {
-      msg: '修改分类失败，参数错误' + error,
-      redirect: ctx.state.__HOST__ + '/admin/article/edit?id=' + id
-    })
+  let prevPage=ctx.req.body.prevPage || '';  /*上一页的地址*/
+  let id=ctx.req.body.id;
+  let pid=ctx.req.body.pid;
+  let catename=ctx.req.body.catename.trim();
+  let title=ctx.req.body.title.trim();
+  let author=ctx.req.body.author.trim();
+  let pic=ctx.req.body.author;
+  let status=ctx.req.body.status;
+  let is_best=ctx.req.body.is_best;
+  let is_hot=ctx.req.body.is_hot;
+  let is_new=ctx.req.body.is_new;
+  let keywords=ctx.req.body.keywords;
+  let description=ctx.req.body.description || '';
+  let content=ctx.req.body.content ||'';
+
+  let img_url=ctx.req.file? ctx.req.file.path :'';
+
+  //属性的简写
+  //注意是否修改了图片          var           let块作用域
+  if(img_url){
+      var json={
+          pid,catename,title,author,status,is_best,is_hot,is_new,keywords,description,content,img_url
+      }
+  }else{
+      var json={
+          pid,catename,title,author,status,is_best,is_hot,is_new,keywords,description,content
+      }
+  }
+
+  DB.update('article',{"_id":DB.getObjectID(id)},json);
+
+
+  //跳转
+  if(prevPage){
+      ctx.redirect(prevPage);
+
+  }else{
+      ctx.redirect(ctx.state.__HOST__+'/admin/article');
   }
 })
 
