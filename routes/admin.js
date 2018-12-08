@@ -1,4 +1,7 @@
-const router = require('koa-router')()
+const router = require('koa-router')(),
+      //引入模块
+      url=require('url');
+      ueditor = require('koa2-ueditor');
 
 const manage = require('./admin/manage'),
       focus = require('./admin/focus'),
@@ -24,5 +27,11 @@ router.use('/login', login)
 router.get('/news', async (ctx) => {
   ctx.body = '新闻管理'
 })
+
+//注意上传图片的路由   ueditor.config.js配置图片post的地址
+router.all('/editor/controller', ueditor(['public', {
+  "imageAllowFiles": [".png", ".jpg", ".jpeg"],
+  "imagePathFormat": "/upload/ueditor/image/{yyyy}{mm}{dd}/{filename}"  // 保存为原文件名
+}]))
 
 module.exports = router.routes()

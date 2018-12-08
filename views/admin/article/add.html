@@ -1,4 +1,9 @@
-{{include 'admin/public/header.html'}}
+﻿{{include 'admin/public/header.html'}}
+
+<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+
 
 <body>
 <div class="navbar navbar-default" id="navbar">
@@ -86,6 +91,15 @@
 							</div>
 						</div>
 
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="description">文章详情:</label>
+
+							<div class="col-sm-10">
+								<script id="editor" type="text/plain" style="width:600px;height:300px;"></script>
+							</div>
+						</div>
+
+
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right"></label>
@@ -118,6 +132,10 @@
 
 {{include 'admin/public/footer.html'}}
 
+<script>
+
+	var ue = UE.getEditor('editor');
+</script>
 
 </body>
 </html>

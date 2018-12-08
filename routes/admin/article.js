@@ -64,6 +64,10 @@ router.post('/doAdd', upload.single('pic') , async (ctx) => {
   // }
 })
 
+router.get('/ueditor', async (ctx) => {
+  await ctx.render('admin/article/ueditor')
+})
+
 router.get('/edit', async (ctx) => {
   let id = ctx.query.id
   const result = await DB.find('article', {
