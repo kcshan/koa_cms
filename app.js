@@ -22,7 +22,7 @@ app.use(jsonp())
 
 // 设置静态资源的路径 
 const staticPath = './public'
-app.use(static('.'))
+// app.use(static('.')) // 不安全
 app.use(static(
   path.join( __dirname,  staticPath)
 ))

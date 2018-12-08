@@ -37,7 +37,7 @@ router.get('/', async (ctx) => {
 router.get('/add', async (ctx) => {
   // const castResult = await DB.find('article', {'pid': '0'})
   const catelist=await DB.find('articlecate',{});
-  console.log(catelist)
+
   await ctx.render('admin/article/add', {
     catelist: tools.cateToList(catelist)
   })
@@ -62,9 +62,11 @@ router.post('/doAdd', upload.single('img_url') , async (ctx) => {
     let content=ctx.req.body.content ||'';
     let img_url=ctx.req.file? ctx.req.file.path :'';
 
+    let add_time=tools.getTime();
+
     //属性的简写
     let json={
-        pid,catename,title,author,status,is_best,is_hot,is_new,keywords,description,content,img_url
+      pid,catename,title,author,status,is_best,is_hot,is_new,keywords,description,content,img_url,add_time
     }
     try {
       var result=DB.insert('article',json);
@@ -114,8 +116,7 @@ router.post('/doEdit', async (ctx) => {
   let keywords=ctx.req.body.keywords;
   let description=ctx.req.body.description || '';
   let content=ctx.req.body.content ||'';
-
-  let img_url=ctx.req.file? ctx.req.file.path :'';
+  let img_url=ctx.req.file? ctx.req.file.path.substr(7) :'';
 
   //属性的简写
   //注意是否修改了图片          var           let块作用域
