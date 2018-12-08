@@ -36,12 +36,16 @@ router.get('/', async (ctx) => {
 
 router.get('/add', async (ctx) => {
   // const castResult = await DB.find('article', {'pid': '0'})
-  await ctx.render('admin/article/add')
+  const catelist=await DB.find('articlecate',{});
+  console.log(catelist)
+  await ctx.render('admin/article/add', {
+    catelist: tools.cateToList(catelist)
+  })
 })
 
 router.post('/doAdd', upload.single('pic') , async (ctx) => {
     ctx.body = {
-      filename: ctx.req.file.filename, // 返回的文件名
+      filename: ctx.req.file ? ctx.req.file.filename : '', // 返回的文件名
       body: ctx.req.body
     }
   // try {

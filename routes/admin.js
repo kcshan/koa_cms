@@ -29,7 +29,7 @@ router.get('/news', async (ctx) => {
 })
 
 //注意上传图片的路由   ueditor.config.js配置图片post的地址
-router.all('/editor/controller', ueditor(['public', {
+router.all('/editorUpload', ueditor(['public', {
   "imageAllowFiles": [".png", ".jpg", ".jpeg"],
   "imagePathFormat": "/upload/ueditor/image/{yyyy}{mm}{dd}/{filename}"  // 保存为原文件名
 }]))
