@@ -2,7 +2,7 @@
 
 const app = {
   dbUrl: '127.0.0.1:27017',
-  dbName: 'koacms',
+  dbName: 'koademo',
   username: 'admin',
   password: '123456'
 }
