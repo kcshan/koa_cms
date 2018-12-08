@@ -132,7 +132,7 @@ class Db{
     count(collectionName,json){
         return new  Promise((resolve,reject)=> {
             this.connect().then((db)=> {
-                var result = db.collection(collectionName).count(json);
+                var result = db.collection(collectionName).countDocuments(json);
                 result.then(function (count) {
 
                     resolve(count);

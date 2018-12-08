@@ -25,7 +25,6 @@ router.post('/doLogin', async (ctx) => {
       "username": username,
       "password": tools.md5(password)
     })
-    console.log(tools.md5(password))
     if (result.length > 0) {
       ctx.session.userinfo = result[0]
 
