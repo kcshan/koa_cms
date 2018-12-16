@@ -24,10 +24,6 @@ router.use('/article', article)
 
 router.use('/login', login)
 
-router.get('/news', async (ctx) => {
-  ctx.body = '新闻管理'
-})
-
 //注意上传图片的路由   ueditor.config.js配置图片post的地址
 router.all('/editorUpload', ueditor(['public', {
   "imageAllowFiles": [".png", ".jpg", ".jpeg"],
