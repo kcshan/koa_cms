@@ -66,8 +66,22 @@ router.use(async (ctx, next) => {
   if (ctx.session.userinfo) {
     await next()
   } else {
-    
-    if (pathname == 'admin/login' || pathname == 'admin/login/doLogin' || pathname == "admin/login/code") {
+    const noAuth = [
+      '',
+      'news',
+      'service',
+      'about',
+      'case',
+      'connect',
+      'admin/login',
+      'admin/login/doLogin',
+      'admin/login/code'
+    ]
+    let result = noAuth.find(item => {
+      return item === pathname
+    })
+    if (pathname === '' ) result = true
+    if (result) {
       await next()
     } else {
       ctx.redirect('/admin/login')
@@ -75,11 +89,12 @@ router.use(async (ctx, next) => {
   }
 })
 
-router.use('/', index)
+router.use(index)
 
 router.use('/admin', admin)
 
 router.use('/api', api)
+
 
 
 app.use(router.routes()) // 启动路由

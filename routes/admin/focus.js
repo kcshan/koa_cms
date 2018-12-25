@@ -32,7 +32,7 @@ router.post('/doAdd', tools.multer().single('pic'),async (ctx)=>{
   //}
   //增加到数据库
   var title=ctx.req.body.title;
-  let pic=ctx.req.file? ctx.state.__HOST__ + '/' + ctx.req.file.path.substr(7) :'';
+  let pic=ctx.req.file? ctx.req.file.path.substr(7) :'';
   var url=ctx.req.body.url;
   var sort=ctx.req.body.sort;
   var status=ctx.req.body.status;

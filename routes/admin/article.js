@@ -44,7 +44,7 @@ router.post('/doAdd',tools.multer().single('img_url') , async (ctx) => {
     let keywords=ctx.req.body.keywords;
     let description=ctx.req.body.description || '';
     let content=ctx.req.body.content ||'';
-    let img_url=ctx.req.file? ctx.state.__HOST__ + '/' + ctx.req.file.path.substr(7) :'';
+    let img_url=ctx.req.file? ctx.req.file.path.substr(7) :'';
     let add_time=tools.getTime();
 
     //属性的简写
@@ -98,7 +98,7 @@ router.post('/doEdit', tools.multer().single('img_url'), async (ctx) => {
   let keywords=ctx.req.body.keywords;
   let description=ctx.req.body.description || '';
   let content=ctx.req.body.content ||'';
-  let img_url=ctx.req.file? ctx.state.__HOST__ + '/' + ctx.req.file.path.substr(7) :'';
+  let img_url=ctx.req.file? ctx.req.file.path.substr(7) :'';
 
   //属性的简写
   //注意是否修改了图片          var           let块作用域
