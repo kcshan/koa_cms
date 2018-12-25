@@ -3,20 +3,6 @@ const router = require('koa-router')()
 const tools = require('../../module/tools'),
       DB = require('../../module/db')
 
-// 图片上传
-const multer = require('koa-multer')
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/upload')  // 配置上传图片的目录 图片上传的目录必须存在
-  },
-  filename: function (req, file, cb) { // 图片上传完成之后重命名
-
-    let fileFormat = (file.originalname).split('.') // 获取后缀名 分割数据
-    cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1])
-  }
-})
-
-const upload = multer({storage: storage})
 
 router.get('/', async (ctx) => {
   const page = ctx.query.page || 1
@@ -46,16 +32,11 @@ router.get('/add', async (ctx) => {
   })
 })
 
-router.post('/doAdd', upload.single('img_url') , async (ctx) => {
-    // ctx.body = {
-    //   filename: ctx.req.file ? ctx.req.file.filename : '', // 返回的文件名
-    //   body: ctx.req.body
-    // }
+router.post('/doAdd',tools.multer().single('img_url') , async (ctx) => {
     let pid=ctx.req.body.pid;
     let catename=ctx.req.body.catename.trim();
     let title=ctx.req.body.title.trim();
     let author=ctx.req.body.author.trim();
-    let pic=ctx.req.body.author;
     let status=ctx.req.body.status;
     let is_best=ctx.req.body.is_best;
     let is_hot=ctx.req.body.is_hot;
@@ -63,8 +44,7 @@ router.post('/doAdd', upload.single('img_url') , async (ctx) => {
     let keywords=ctx.req.body.keywords;
     let description=ctx.req.body.description || '';
     let content=ctx.req.body.content ||'';
-    let img_url=ctx.req.file? ctx.req.file.path :'';
-
+    let img_url=ctx.req.file? ctx.state.__HOST__ + '/' + ctx.req.file.path.substr(7) :'';
     let add_time=tools.getTime();
 
     //属性的简写
@@ -104,14 +84,13 @@ router.get('/edit', async (ctx) => {
   });
 })
 
-router.post('/doEdit', async (ctx) => {
+router.post('/doEdit', tools.multer().single('img_url'), async (ctx) => {
   let prevPage=ctx.req.body.prevPage || '';  /*上一页的地址*/
   let id=ctx.req.body.id;
   let pid=ctx.req.body.pid;
   let catename=ctx.req.body.catename.trim();
   let title=ctx.req.body.title.trim();
   let author=ctx.req.body.author.trim();
-  let pic=ctx.req.body.author;
   let status=ctx.req.body.status;
   let is_best=ctx.req.body.is_best;
   let is_hot=ctx.req.body.is_hot;
@@ -119,7 +98,7 @@ router.post('/doEdit', async (ctx) => {
   let keywords=ctx.req.body.keywords;
   let description=ctx.req.body.description || '';
   let content=ctx.req.body.content ||'';
-  let img_url=ctx.req.file? ctx.req.file.path.substr(7) :'';
+  let img_url=ctx.req.file? ctx.state.__HOST__ + '/' + ctx.req.file.path.substr(7) :'';
 
   //属性的简写
   //注意是否修改了图片          var           let块作用域

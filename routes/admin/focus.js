@@ -3,21 +3,6 @@ const router = require('koa-router')()
 const tools = require('../../module/tools'),
       DB = require('../../module/db')
 
-//配置上传图片
-const multer = require('koa-multer');
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/upload')
-    },
-    filename: function (req, file, cb) {
-        var fileFormat = (file.originalname).split(".");   /*获取后缀名  分割数组*/
-        cb(null,Date.now() + "." + fileFormat[fileFormat.length - 1]);
-    }
-})
-
-const upload = multer({ storage: storage });
-
 router.get('/',async (ctx)=>{
 
   var page=ctx.query.page ||1;
@@ -38,7 +23,7 @@ router.get('/add',async (ctx)=>{
   await  ctx.render('admin/focus/add');
 })
 
-router.post('/doAdd',upload.single('pic'),async (ctx)=>{
+router.post('/doAdd', tools.multer().single('pic'),async (ctx)=>{
   //接受post传过来的数据
   //注意：在模板中配置  enctype="multipart/form-data"
   //ctx.body = {
@@ -70,7 +55,7 @@ router.get('/edit',async (ctx)=>{
 })
 
 //执行编辑数据
-router.post('/doEdit',upload.single('pic'),async (ctx)=>{
+router.post('/doEdit', tools.multer().single('pic'),async (ctx)=>{
     const id=ctx.req.body.id;
     const title=ctx.req.body.title;
     const pic=ctx.req.file? ctx.req.file.path.substr(7) :'';

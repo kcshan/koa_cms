@@ -73,20 +73,19 @@ router.get('/remove', async (ctx) => {
   let collectionName = ctx.query.collection// 数据库表
 
   // 处理删除异常 ---
-  let count= await  DB.count('article',{});
+  // let count= await  DB.count('article',{});
   let prevPage = ctx.state.G.prevPage
-  let newPrevPage = ''
-  if (prevPage.indexOf('article?page=') > -1) {
-    let pageUrlArr = prevPage.split('article?page=')
-    let pageNum = parseInt(pageUrlArr[1])
-    let pageHost = pageUrlArr[0]
-    if (count % 10 == 1 && pageNum > 1) {
-      newPrevPage = pageHost + 'article?page=' + (pageNum - 1)
-    } else {
-      newPrevPage = prevPage
-    }
-  }
-  // ---
+  // let newPrevPage = ''
+  // if (prevPage.indexOf('article?page=') > -1) {
+  //   let pageUrlArr = prevPage.split('article?page=')
+  //   let pageNum = parseInt(pageUrlArr[1])
+  //   let pageHost = pageUrlArr[0]
+  //   if (count % 10 == 1 && pageNum > 1) {
+  //     newPrevPage = pageHost + 'article?page=' + (pageNum - 1)
+  //   } else {
+  //     newPrevPage = prevPage
+  //   }
+  // }
 
   try {
       const removeResult = await DB.remove(collectionName, {

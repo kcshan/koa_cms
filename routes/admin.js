@@ -8,7 +8,9 @@ const manage = require('./admin/manage'),
       articlecate = require('./admin/articlecate'),
       article = require('./admin/article'),
       login = require('./admin/login'),
-      index = require('./admin/index')
+      index = require('./admin/index'),
+      link = require('./admin/link'),
+      nav = require('./admin/nav')
 
 // router.use('/', index)
 // 后台的首页可以这样写
@@ -23,6 +25,10 @@ router.use('/articlecate', articlecate)
 router.use('/article', article)
 
 router.use('/login', login)
+
+router.use('/link', link)
+
+router.use('/nav', nav)
 
 //注意上传图片的路由   ueditor.config.js配置图片post的地址
 router.all('/editorUpload', ueditor(['public', {
