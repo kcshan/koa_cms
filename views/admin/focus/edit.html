@@ -51,42 +51,67 @@
 
 				<div class="page-header">
 					<h1>
-						修改管理员
+						修改轮播图
 					</h1>
 				</div><!-- /.page-header -->
 
 				<!--表格-->
 
 				<div class="table-responsive">
-					<form action="{{__HOST__}}/admin/manage/doEdit" method="post" class="form-horizontal" role="form">
+					<form action="{{__HOST__}}/admin/focus/doEdit" method="post" class="form-horizontal" enctype="multipart/form-data">
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="username">用户名:</label>
+							<label class="col-sm-2 control-label no-padding-right" for="title">标题:</label>
 
 							<div class="col-sm-10">
-								<input type="hidden" name="id"  value="{{@list._id}}"/>
-								<input type="text" id="username" readonly  name="username" value="{{list.username}}" class="col-xs-10 col-sm-5" />
+								<input type="text" id="title"  name="title" class="col-xs-10 col-sm-5" value="{{list.title}}" />
+
+
+								<input type="hidden" name="id" value="{{@list._id}}"/>
+								<input type="hidden" name="prevPage" value="{{prevPage}}"/>
+
+							</div>
+						</div>
+
+						<div class="form-group"  style="height: 140px;">
+							<label class="col-sm-2 control-label no-padding-right" for="title">轮播图:</label>
+
+							<div class="col-sm-10">
+								<input type="file" name="pic"/>
+							</div>
+
+							<br/>
+							<img src="{{list.pic}}" alt="" class="img"/>
+							<br/>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="title">链接地址:</label>
+
+							<div class="col-sm-10">
+								<input type="text" id="url"  name="url" class="col-xs-10 col-sm-5"  value="{{list.url}}" />
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="password">密 码:</label>
+							<label class="col-sm-2 control-label no-padding-right" for="title">排序:</label>
 
 							<div class="col-sm-10">
-								<input type="password" id="password"  name="password" class="col-xs-10 col-sm-5" />
+								<input type="text" id="sort"  name="sort" class="col-xs-10 col-sm-5"  value="{{list.sort}}" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">状态：</label>
+							<div class="col-sm-10">
+								<label for="status1">已审核：</label><input type="radio" name="status"  id="status1" value="1"  {{if list.status==1}}checked {{/if}} />
+								&nbsp;
+								<label for="status2">未审核:</label><input type="radio" name="status" id="status2" value="0"   {{if list.status==0}}checked {{/if}} />
 							</div>
 						</div>
 
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="rpassword">确认密码:</label>
-
-							<div class="col-sm-10">
-								<input type="password" id="rpassword"  name="rpassword" class="col-xs-10 col-sm-5" />
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="rpassword"></label>
+							<label class="col-sm-2 control-label no-padding-right"></label>
 
 							<div class="col-sm-10">
 								<button type="submit" class="btn btn-primary">提交</button>

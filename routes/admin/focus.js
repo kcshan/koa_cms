@@ -35,7 +35,6 @@ router.get('/',async (ctx)=>{
 })
 
 router.get('/add',async (ctx)=>{
-  console.log('/add')
   await  ctx.render('admin/focus/add');
 })
 
@@ -60,10 +59,52 @@ router.post('/doAdd',upload.single('pic'),async (ctx)=>{
   ctx.redirect(ctx.state.__HOST__+'/admin/focus');
 })
 
-
-router.get('/edit', async (ctx) => {
-  await ctx.render('admin/focus/edit')
+//编辑
+router.get('/edit',async (ctx)=>{
+    const id=ctx.query.id
+    const result=await DB.find('focus',{"_id":DB.getObjectID(id)});
+    await ctx.render('admin/focus/edit',{
+        list:result[0],
+        prevPage:ctx.state.G.prevPage
+    });
 })
+
+//执行编辑数据
+router.post('/doEdit',upload.single('pic'),async (ctx)=>{
+    const id=ctx.req.body.id;
+    const title=ctx.req.body.title;
+    const pic=ctx.req.file? ctx.req.file.path.substr(7) :'';
+    const url=ctx.req.body.url;
+    const sort=ctx.req.body.sort;
+    const status=ctx.req.body.status;
+    const add_time=tools.getTime();
+    const prevPage=ctx.req.body.prevPage;
+    if(pic){
+
+        var json={
+
+            title,pic,url,sort,status,add_time
+        }
+    }else{
+        var json={
+
+            title,url,sort,status,add_time
+        }
+
+    }
+    await  DB.update('focus',{'_id':DB.getObjectID(id)},json);
+
+
+    if(prevPage){
+        ctx.redirect(prevPage);
+    }else{
+        //跳转
+        ctx.redirect(ctx.state.__HOST__+'/admin/focus');
+
+    }
+
+})
+
 
 router.get('/delete', async (ctx) => {
   ctx.body = '删除轮播图'
