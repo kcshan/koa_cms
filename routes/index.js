@@ -31,7 +31,40 @@ router.get('/', async (ctx) => {
 })
 
 router.get('/news', async (ctx) => {
-  ctx.render('default/news')
+  
+  var page=ctx.query.page ||1;
+  var pid=ctx.query.pid;
+  var pageSize=3;
+
+  //获取分类
+  var cateResult=await  DB.find('articlecate',{'pid':'5ab34b90574aa83ee8c3deab'});
+  if(pid){
+    var  articleResult=await DB.find('article',{"pid":pid},{},{
+        pageSize,
+        page
+    });
+    var  articleNum=await DB.count('article',{"pid":pid});
+  }else{
+    //获取所有子分类的id
+    var subCateArr=[];
+    for(var i=0;i<cateResult.length;i++){
+        subCateArr.push(cateResult[i]._id.toString());
+    }
+    var  articleResult=await DB.find('article',{"pid":{$in:subCateArr}},{},{
+        pageSize,
+        page
+    });
+    var  articleNum=await DB.count('article',{"pid":{$in:subCateArr}});
+  }
+
+  ctx.render('default/news',{
+      catelist:cateResult,
+      newslist:articleResult,
+      pid:pid,
+      page:page,
+      totalPages:Math.ceil(articleNum/pageSize)
+
+  });
 })
 
 router.get('/service', async (ctx) => {
@@ -57,7 +90,42 @@ router.get('/about', async (ctx) => {
 })
 
 router.get('/case', async (ctx) => {
-  ctx.render('default/case')
+
+  let pid = ctx.query.pid
+  let page = ctx.query.page || 1
+  let pageSize = 3
+  let articleResult,
+      articleNum,
+      subCateArr,
+      cateResult 
+  cateResult = await  DB.find('articlecate',{'pid':'5ab3209bdf373acae5da097e'});
+
+  if (pid) {
+    articleResult = await DB.find('article', {"pid": pid}, {}, {
+      page,
+      pageSize
+    });
+    articleNum = await DB.count('article', {"pid": pid})
+
+  } else {
+    subCateArr = []
+    for(var i = 0; i < cateResult.length; i++){
+        subCateArr.push(cateResult[i]._id.toString());
+    }
+    articleResult = await DB.find('article', {"pid":{$in: subCateArr}},{},{
+      page,
+      pageSize
+    });
+    articleNum = await DB.count('article', {"pid": {$in: subCateArr}})
+  }
+
+  ctx.render('default/case',{
+    catelist: cateResult,
+    articlelist: articleResult,
+    pid: pid,
+    page: page,
+    totalPages: Math.ceil(articleNum/pageSize)
+  })
 })
 
 router.get('/connect',async (ctx) => {

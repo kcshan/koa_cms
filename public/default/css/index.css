@@ -43,13 +43,7 @@
 /*swiper*/
 	
 .swiper-slide{
-	height: 320px !important;
-}
-
-.swiper-slide  img {
-	display: block;
-	width: 100%;
-	height: 100%;
+	height: 320px;
 }
 
 .swiper-pagination-bullet-active{

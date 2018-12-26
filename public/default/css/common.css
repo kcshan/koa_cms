@@ -22,6 +22,7 @@ margin-top:24px;}
 .footer-inner p{color:#727272; text-align:center;line-height:30px;}
 .footer-inner p a{color:#727272;}
 
+.pagination{
 
-
-
+	float: right;
+}

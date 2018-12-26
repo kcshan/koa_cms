@@ -31,7 +31,7 @@ app.use(static(
 app.keys = ['some secret hurr']
 const CONFIG = {
   key: 'koa:sess',
-  maxAge: 864000, //【需要修改】
+  maxAge: 60 * 60 * 24 * 1000, //【需要修改】
   overwrite: true,
   httpOnly: true,
   signed: true,

@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="default/css/common.css" />
 <link rel="stylesheet" type="text/css" href="default/css/heder_nav-menu.css"/>
 <link rel="stylesheet" type="text/css" href="default/css/successful_case.css"/>
+<link rel="stylesheet" type="text/css" href="default/css/bootstrap.min.css"/>
 </head>
 
 <body>
@@ -17,7 +18,7 @@
 
 <div id="header_nav-wrapper">
     <div class="header_nav">
-    	<h2>新闻资讯 &#160; <span>世界每天在变，我们的服务品质不变</span></h2>
+    	<h2>成功案例 &#160; <span>让品牌与您同在</span></h2>
     
     
     </div>
@@ -28,15 +29,12 @@
 
 <div id="header_title-wrapper">
 
-    <div class="header_title clear">
-        <p >
-        <a href="#">服务行业</a>
-        <a href="#">教育行业</a>
-        <a href="#">房地产业</a>
-        <a href="#" style="margin-right:20px;">能源行业</a>
-        
-        </p>
-    </div>
+
+		<div class="header_cate">
+			{{each catelist}}
+					<a {{if pid==$value._id}}class="active"{{/if}} href="/news?pid={{@$value._id}}">{{$value.title}}</a>
+			{{/each}}
+		</div>
 
 
 </div>
@@ -47,52 +45,22 @@
     
     <div class="main">
 	    <ul class="clear">
-	    
-		    <li>
-		    	
-		    		<a href="#"><img src="default/images/successful_case/main_image1.jpg" /></a>
-		    		
-		    		<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    	
-		    	
-		    </li>
-		    <li>
-		    	
-		    	<a href="#"><img src="default/images/successful_case/main_image2.jpg" /></a>
-		    	
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    
-		    </li>
-		    <li>
-		    	
-		    	<a href="#" style=" margin-right:0;"><img src="default/images/successful_case/main_image3.jpg" /></a>
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    
-		    </li>
-		    <li>
-		    	<a href="#"><img src="default/images/successful_case/main_image4.jpg" /></a>
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    </li>
-		     <li>
-		    	<a href="#"><img src="default/images/successful_case/main_image4.jpg" /></a>
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    </li>
-		     <li>
-		    	<a href="#"><img src="default/images/successful_case/main_image4.jpg" /></a>
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    </li>
-		     <li>
-		    	<a href="#"><img src="default/images/successful_case/main_image4.jpg" /></a>
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    </li>
-		     <li>
-		    	<a href="#"><img src="default/images/successful_case/main_image4.jpg" /></a>
-		    	<p>新部委整合职责相继挂牌 近日都有哪些新动</p>
-		    </li>
+
+			{{each newslist}}
+				<li>
+
+					<a href="content/{{@$value._id}}"><img src="{{$value.img_url}}" /></a>
+
+					<p>{{$value.title}}</p>
+
+
+				</li>
+			{{/each}}
+
 	   
 	    
 	    </ul>
-    
+		<div id="page" class="pagination"></div>
     
     </div>
 
@@ -119,10 +87,32 @@
                 <p>电话：15918779820 E-mail：89898981@qq.com 地址：上海市沙河广园东路1858新天地服装城</p>
             </div>
 </div>
-        
 
 
 
+
+<script src="/default/js/jquery-1.10.2.min.js"></script>
+<script src="/default/js/jqPaginator.js"></script>
+
+<script>
+
+	// $('#page').jqPaginator({
+	// 	totalPages: {{totalPages}},
+	// 	visiblePages: 6,
+	// 	currentPage: {{page}},
+	// 	onPageChange: function (num, type) {
+
+	// 	if(type=='change'){
+	// 		{{if pid}}
+	// 			location.href="/news?pid={{pid}}&page="+num;
+
+	// 			{{else}}
+	// 			location.href="/news?page="+num;
+	// 			{{/if}}
+	// 			}
+	// 		}
+	// 	});
+</script>
 
 </body>
 </html>
