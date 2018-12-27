@@ -11,6 +11,11 @@ router.use(async (ctx,next) => {
   let navResult = await DB.find('nav', {$or:[{'status':1}, {'status':'1'}]}, {}, {
       sortJson:{'sort':1}
   })
+
+  //获取系统信息
+  let setting=await DB.find('setting',{});
+  ctx.state.setting=setting[0];
+
   //模板引擎配置全局的变量
   ctx.state.nav = navResult
   ctx.state.pathname = pathname
@@ -18,15 +23,18 @@ router.use(async (ctx,next) => {
 })
 
 router.get('/', async (ctx) => {
-    console.time('start')
     //轮播图  注意状态数据不一致问题  建议在后台增加数据的时候状态 转化成number类型
     let focusResult = await DB.find('focus', {$or: [{'status':1}, {'status':'1'}]}, {}, {
         sortJson:{'sort':1}
     })
-    console.timeEnd('start')
+    //导航条的数据
+    let links=await DB.find('link',{$or:[{'status':1},{'status':'1'}]},{},{
+      sortJson:{'sort':1}
+    })
 
     ctx.render('default/index',{
-        focus:focusResult
+        focus:focusResult,
+        links:links
     })
 })
 
@@ -80,8 +88,28 @@ router.get('/content/:id',async (ctx)=>{
   let id = ctx.params.id
   let content = await  DB.find('article', {'_id': DB.getObjectID(id)})
 
+  /**
+   * 1. 根据文章获取文章的分类信息
+   * 2. 根据文章的分类信息，去导航表里面查找当前分类信息的url
+   * 3. 把url赋值给 pathname 
+   */
+  let cateResult=await  DB.find('articlecate', {'_id': DB.getObjectID(content[0].pid)})
+  if(cateResult[0].pid!=0) {  /*子分类*/
+    //找到当前分类的父亲分类
+    var parentCateResult=await  DB.find('articlecate',{'_id':DB.getObjectID(cateResult[0].pid)});
+    var navResult=await  DB.find('nav',{$or:[{'title':cateResult[0].title},{'title':parentCateResult[0].title}]});
+  }else{  /*父分类*/
+    //在导航表查找当前分类对应的url信息
+    var navResult=await  DB.find('nav',{'title':cateResult[0].title});
+  }
+
+  if(navResult.length>0){
+      ctx.state.pathname=navResult[0]['url'];
+  }else{
+      ctx.state.pathname='/';
+  }
   ctx.render('default/content',{
-    list: content[0]
+      list:content[0]
   });
 })
 
